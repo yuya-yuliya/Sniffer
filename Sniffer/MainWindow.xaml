@@ -1,0 +1,96 @@
+﻿<Window x:Class="Sniffer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sniffer"
+        mc:Ignorable="d"
+        Title="Network traffic analyzer" Height="600" Width="900" Closing="Window_Closing" Closed="Window_Closed" Background="#FFD3F7C6">
+  <Window.Resources>
+    <Style x:Key="common">
+      <Setter Property="Control.Margin" Value="5"/>
+    </Style>
+    <Style BasedOn="{StaticResource common}" TargetType="TextBox">
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+    <Style BasedOn="{StaticResource common}" TargetType="Button">
+      <Setter Property="Width" Value="100"/>
+    </Style>
+  </Window.Resources>
+    <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="20"/>
+      <RowDefinition Height="30"/>
+      <RowDefinition/>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <ListView x:Name="packetLV" Grid.Row="2" Margin="5" ScrollViewer.HorizontalScrollBarVisibility="Auto" SelectionChanged="packetLV_SelectionChanged">
+      <ListView.View>
+        <GridView>
+          <GridView.Columns>
+            <GridViewColumn Header="Version" Width="75" DisplayMemberBinding="{Binding Path=Version}"></GridViewColumn>
+            <GridViewColumn Header="Protocol" Width="75" DisplayMemberBinding="{Binding Path=Protocol}"></GridViewColumn>
+            <GridViewColumn Header="Total length" Width="75" DisplayMemberBinding="{Binding Path=TotalLength}"></GridViewColumn>
+            <GridViewColumn Header="Source" Width="200" DisplayMemberBinding="{Binding Path=SourceIPAddr}"></GridViewColumn>
+            <GridViewColumn Header="Destination" Width="200" DisplayMemberBinding="{Binding Path=DestIPAddr}"></GridViewColumn>
+          </GridView.Columns>
+        </GridView>
+      </ListView.View>
+    </ListView>
+    <StackPanel Grid.Row="1" Orientation="Horizontal">
+      <Button x:Name="startBtn" Content="Start" Click="startBtn_Click"/>
+      <Button x:Name="stopBtn" Content="Stop" Click="stopBtn_Click"/>
+      <Button x:Name="restartBtn" Content="Restart" Click="restartBtn_Click"/>
+    </StackPanel>
+    <Grid Grid.Row="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <TextBox x:Name="headerTB" Grid.Column="0" IsReadOnly="True"/>
+      <TextBox x:Name="infoTB" Grid.Column="1" IsReadOnly="True"/>
+    </Grid>
+    <Menu Grid.Row="0">
+      <MenuItem Header="File">
+        <MenuItem Header="Open" Click="MenuItem_Click_1"/>
+        <MenuItem Header="Save as..." Click="MenuItem_Click"/>
+        <MenuItem Header="Send" Click="MenuItem_Click_2"/>
+        <Separator/>
+        <MenuItem Header="Exit" Click="MenuItem_Click_4"/>
+      </MenuItem>
+      <MenuItem Header="Analyze">
+        <MenuItem x:Name="startMI" Header="Start" Click="startBtn_Click"/>
+        <MenuItem x:Name="stopMI" Header="Stop" Click="stopBtn_Click"/>
+        <MenuItem x:Name="restartMI" Header="Restart" Click="restartBtn_Click"/>
+      </MenuItem>
+      <MenuItem Header="Settings">
+        <MenuItem Header="Filters" Click="MenuItem_Click_3"/>
+        <MenuItem x:Name="receiveMI" Header="Receive files" IsCheckable="True" IsChecked="True" Click="receiveMI_Click"/>
+      </MenuItem>
+    </Menu>
+    <StatusBar Grid.Row="4">
+      <StatusBar.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+          </Grid>
+        </ItemsPanelTemplate>
+      </StatusBar.ItemsPanel>
+      <StatusBarItem Grid.Column="0">
+        <Label x:Name="statusL"/>
+      </StatusBarItem>
+      <Separator Grid.Column="1"/>
+      <StatusBarItem Grid.Column="2">
+        <StackPanel Orientation="Horizontal">
+          <Label Content="Packets:"/>
+          <Label x:Name="countL"/>
+        </StackPanel>
+      </StatusBarItem>
+    </StatusBar>
+  </Grid>
+</Window>
